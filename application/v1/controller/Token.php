@@ -9,24 +9,20 @@
 namespace app\v1\controller;
 use app\v1\model\Jwt;
 use think\Controller;
+use app\v1\validate\TokenValidate;
+use app\v1\model\AdminModel;
 
 class Token extends Controller
 {
     public function loginFromUserPassword(){
 
-        $data = $this->request->param();
-        $rule = [
-            'username'  =>  'require',
-            'password' =>  'require',
-        ];
-        $result = $this->validate($data,$rule);
-        if (true !== $result){
-            return json($result);
-        }
+        (new TokenValidate())->scene('user')->goCheck();
         //登录逻辑
-        
+        (new AdminModel())->adminLogin();
+        exit();
+
         //如果登录成功
-        return (new Jwt())->getToken($data['username']);
+        return (new Jwt())->getToken($this->request->param('username'));
     }
     public function loginFromOpenId($openId){
         $code = $this->request->param('code');  //获取从前端传过来的code，并得到该用户openid

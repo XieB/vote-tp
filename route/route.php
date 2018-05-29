@@ -8,10 +8,10 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-Route::allowCrossDomain(true);     //允许跨域
+Route::allowCrossDomain();     //允许跨域
 
 //登录
-Route::post(':version/token/admin', ':version/token/loginFromUserPassword');
+Route::any(':version/token/admin', ':version/token/loginFromUserPassword');
 Route::post(':version/token/user', ':version/token/loginFromOpenId');
 
 //其他
