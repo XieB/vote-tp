@@ -10,3 +10,22 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+function returnError($param,$action='Miss'){
+    $name='\\app\common\\exception\\'.$action.'Exception';
+
+    throw new $name($param);
+
+}
+
+function jsonSuccess($params=[]){
+    if(!is_array($params)){
+        return ;
+    }
+
+    $result['data']=array_key_exists('data', $params)?$params['data']:[];
+    $result['info']=array_key_exists('info', $params)?$params['info']:'ok';
+    $result['status']=array_key_exists('status', $params)?$params['status']:1;
+
+    return json($result);
+}

@@ -16,13 +16,18 @@ class Token extends Controller
 {
     public function loginFromUserPassword(){
 
+
         (new TokenValidate())->scene('user')->goCheck();
         //登录逻辑
-        (new AdminModel())->adminLogin();
-        exit();
 
+        if (!(new AdminModel())->adminLogin()){
+            returnError(['info'=>'账户或密码错误!']);
+        }
+
+        $username = $this->request->param('username');
         //如果登录成功
-        return (new Jwt())->getToken($this->request->param('username'));
+        $token = (new Jwt())->getToken($username);
+        return jsonSuccess(['data'=>$token]);
     }
     public function loginFromOpenId($openId){
         $code = $this->request->param('code');  //获取从前端传过来的code，并得到该用户openid

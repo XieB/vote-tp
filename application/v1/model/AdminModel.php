@@ -16,7 +16,16 @@ class AdminModel extends BaseModel
 
     public function adminLogin(){
         $username = Request::param('username');
-        $res = $this::where(['username'=>$username])->find();
-        print_r($res);
+        $password = Request::param('password');
+        $res = $this->where(['username'=>$username])->find();
+        if (!$res){
+            return false;
+        }
+        $res = $res->toArray();
+        $salt = $res['salt'];
+        if (md5($password . $salt) == $res['password']){
+            return true;
+        }
+        return false;
     }
 }
