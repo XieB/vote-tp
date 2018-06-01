@@ -29,3 +29,15 @@ function jsonSuccess($params=[]){
 
     return json($result);
 }
+
+function jsonError($params=[]){
+    if(!is_array($params)){
+        return ;
+    }
+
+    $result['data']=array_key_exists('data', $params)?$params['data']:[];
+    $result['info']=array_key_exists('info', $params)?$params['info']:'error';
+    $result['status']=array_key_exists('status', $params)?$params['status']:0;
+
+    return json($result);
+}

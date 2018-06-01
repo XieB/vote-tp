@@ -10,7 +10,6 @@ namespace app\v1\controller;
 use app\v1\model\Jwt;
 use think\Controller;
 use app\common\exception\TokenException;
-use think\Request;
 
 class Base extends Controller
 {

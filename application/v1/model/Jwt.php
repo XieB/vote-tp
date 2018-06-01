@@ -17,7 +17,7 @@ class Jwt
     private $signer;
     private $iss = 'fromme';
     private $halt = 'idontknowxiediansha';
-    private $timeout = 20;    //超时时间
+    private $timeout = 3600;    //超时时间
     public function __construct()
     {
         $this->signer = new Sha256();

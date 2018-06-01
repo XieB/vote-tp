@@ -7,7 +7,6 @@
  */
 
 namespace app\v1\model;
-use think\Model;
 use think\facade\Request;
 
 class AdminModel extends BaseModel
