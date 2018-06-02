@@ -24,5 +24,6 @@ class VoteValidate extends BaseValidate
         'add'  =>  ['title','type','startTime','endTime','nameList'],
         'get'  =>  ['type','page'],
         'delete' => ['id'],
+        'partUpdate' => ['id','endTime'],
     ];
 }

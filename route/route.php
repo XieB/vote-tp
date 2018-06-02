@@ -19,6 +19,10 @@ Route::post(':version/vote',':version/vote/add');
 Route::get(':version/vote$',':version/vote/get');
 Route::delete(':version/vote',':version/vote/delete');
 Route::get(':version/vote/one',':version/vote/getOne');
+Route::put(':version/vote',':version/vote/update');
+
+//设置
+Route::put(':version/system/pass',':version/system/resetPass');
 
 
 //其他测试

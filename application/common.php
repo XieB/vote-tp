@@ -41,3 +41,7 @@ function jsonError($params=[]){
 
     return json($result);
 }
+
+function createPass($passText,$salt){
+    return md5($passText . $salt);
+}

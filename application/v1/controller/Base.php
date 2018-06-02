@@ -10,6 +10,7 @@ namespace app\v1\controller;
 use app\v1\model\Jwt;
 use think\Controller;
 use app\common\exception\TokenException;
+use Lcobucci\JWT\Parser;
 
 class Base extends Controller
 {
@@ -28,5 +29,12 @@ class Base extends Controller
         if (!$res){     //验证失败，返回401状态码
             throw new TokenException(); //token错误异常
         }
+        $this->regAdminUser($token);
+    }
+
+    public function regAdminUser($str){
+        $token = (new Parser())->parse((string) $str);
+        $user = $token->getClaim('user');
+        session('admin_user',$user);  //注册session用来获取当前用户
     }
 }

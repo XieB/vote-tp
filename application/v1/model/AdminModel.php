@@ -22,9 +22,22 @@ class AdminModel extends BaseModel
         }
         $res = $res->toArray();
         $salt = $res['salt'];
-        if (md5($password . $salt) == $res['password']){
+        if ((createPass($password,$salt)) == $res['password']){
             return true;
         }
         return false;
+    }
+
+    public function resetPass(){
+        $data = Request::param();
+
+        $res = $this->getAdminInfo();
+        $newPass = createPass($data['newPass'],$res['salt']);
+
+        return $this->save(['password'=>$newPass],['username'=>session('admin_user')]);
+    }
+
+    public function getAdminInfo(){
+        return $this->where(['username'=>session('admin_user')])->find();
     }
 }
