@@ -56,7 +56,7 @@ return [
     // 默认模块名
     'default_module'         => 'index',
     // 禁止访问模块
-    'deny_module_list'       => ['common'],
+    'deny_module_list'       => [''],
     // 默认控制器名
     'default_controller'     => 'Index',
     // 默认操作名
@@ -140,5 +140,13 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '\\app\\common\\exception\\ExceptionHandler',
+
+    'wechat'                => [
+        'appID'     => 'wx9e74d5e50ed84c6e',
+        'appsecret' => '749c115e8510bd288f97958fe785cfa0',
+    ],
+
+    'token_admin' => 'admin',   //session及token字段名
+    'token_user' => 'user',     //session及token字段名
 
 ];

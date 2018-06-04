@@ -6,7 +6,7 @@
  * Time: 14:46
  */
 
-namespace app\v1\model;
+namespace app\common\model;
 
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -23,11 +23,12 @@ class Jwt
         $this->signer = new Sha256();
     }
 
-    public function getToken($user){
+    public function getToken($user,$key){
+        if (!$key) $key = config('token_admin');
         $token = (new Builder())->setIssuer($this->iss)
             ->setIssuedAt(time())
             ->setExpiration(time() + $this->timeout)
-            ->set('user', $user)
+            ->set($key, $user)
             ->sign($this->signer, $this->halt)
             ->getToken();
         return (string)$token;  //其实现了__toString方法

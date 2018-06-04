@@ -6,10 +6,10 @@
  * Time: 13:58
  */
 
-namespace app\v1\controller;
-use app\v1\model\Jwt;
+namespace app\admin\controller;
+use app\common\exception\AdminTokenException;
+use app\common\model\Jwt;
 use think\Controller;
-use app\common\exception\TokenException;
 use Lcobucci\JWT\Parser;
 
 class Base extends Controller
@@ -27,14 +27,15 @@ class Base extends Controller
         $res = (new Jwt())->verifyToken($token);
         //如果前端传过来的token不合规范，会有异常抛出（500状态码），暂时不处理吧
         if (!$res){     //验证失败，返回401状态码
-            throw new TokenException(); //token错误异常
+            throw new AdminTokenException();
         }
         $this->regAdminUser($token);
     }
 
     public function regAdminUser($str){
+        $name = config('token_admin');
         $token = (new Parser())->parse((string) $str);
-        $user = $token->getClaim('user');
-        session('admin_user',$user);  //注册session用来获取当前用户
+        $user = $token->getClaim($name);
+        session($name,$user);  //注册session用来获取当前用户
     }
 }

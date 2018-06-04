@@ -11,22 +11,25 @@
 Route::allowCrossDomain(true);     //允许跨域
 
 //登录
-Route::post(':version/token/admin', ':version/token/loginFromUserPassword');
-Route::post(':version/token/user', ':version/token/loginFromOpenId');
+Route::post('common/token/admin', 'common/token/loginFromUserPassword');
+Route::get('common/token/user', 'common/token/loginFromOpenId');
 
 //投票
-Route::post(':version/vote',':version/vote/add');
-Route::get(':version/vote$',':version/vote/get');
-Route::delete(':version/vote',':version/vote/delete');
-Route::get(':version/vote/one',':version/vote/getOne');
-Route::put(':version/vote',':version/vote/update');
+Route::post('admin/vote','admin/vote/add');
+Route::get('admin/vote$','admin/vote/get');
+Route::delete('admin/vote','admin/vote/delete');
+Route::get('admin/vote/one','admin/vote/getOne');
+Route::put('admin/vote','admin/vote/update');
 
 //设置
-Route::put(':version/system/pass',':version/system/resetPass');
+Route::put('admin/system/pass','admin/system/resetPass');
+
+//用户
+Route::get('user/vote','user/vote/getList');
 
 
 //其他测试
-Route::any(':version/token/test', ':version/token/test');
+Route::any('admin/token/test', 'admin/token/test');
 
 Route::get('think', function () {
     return 'hello,ThinkPHP5!';

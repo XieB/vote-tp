@@ -6,11 +6,14 @@
  * Time: 13:58
  */
 
-namespace app\v1\controller;
-use app\v1\model\Jwt;
+namespace app\common\controller;
+use app\common\model\Jwt;
+use app\common\validate\WechatValidate;
+use app\user\model\UserModel;
 use think\Controller;
-use app\v1\validate\TokenValidate;
-use app\v1\model\AdminModel;
+use app\common\validate\TokenValidate;
+use app\admin\model\AdminModel;
+use app\common\model\Wechat;
 
 class Token extends Controller
 {
@@ -26,16 +29,23 @@ class Token extends Controller
 
         $username = $this->request->param('username');
         //如果登录成功
-        $token = (new Jwt())->getToken($username);
+        $token = (new Jwt())->getToken($username,config('token_admin'));
         return jsonSuccess(['data'=>$token]);
     }
-    public function loginFromOpenId($openId){
+    public function loginFromOpenId(){
+        (new WechatValidate())->goCheck();
+
         $code = $this->request->param('code');  //获取从前端传过来的code，并得到该用户openid
         //得到用户openid逻辑
+        $openId = (new Wechat())->getOpenidFromCode($code);
+        if (!$openId) return jsonError();
 
-        $openId = '';
+        //插入新纪录
+        (new UserModel())->checkUserFromOpenid($openId);
+        session(config('token_user'),$openId);
 
-        return (new Jwt())->getToken($openId);
+        $token = (new Jwt())->getToken($openId,config('token_user'));
+        return jsonSuccess(['data'=>$token]);
     }
     public function test(){
         return json('aaa');
