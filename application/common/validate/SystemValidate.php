@@ -15,9 +15,13 @@ class SystemValidate extends BaseValidate
         'oldPass'  =>  'require',
         'newPass' =>  'require',
         'reNewPass' => 'require',
+        'id' => 'require|number',
+        'page' => 'require|number',
 
     ];
     protected $scene = [
         'resetPass' => ['oldPass','newPass','reNewPass'],
+        'examineSuccess' => ['id'],
+        'isExamine' => ['page'],
     ];
 }

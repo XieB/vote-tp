@@ -23,14 +23,16 @@ class Jwt
         $this->signer = new Sha256();
     }
 
-    public function getToken($user,$key){
-        if (!$key) $key = config('token_admin');
+    public function getToken($array = []){
+        if (empty($array) || !is_array($array)) return false;
         $token = (new Builder())->setIssuer($this->iss)
             ->setIssuedAt(time())
-            ->setExpiration(time() + $this->timeout)
-            ->set($key, $user)
-            ->sign($this->signer, $this->halt)
-            ->getToken();
+            ->setExpiration(time() + $this->timeout);
+        foreach ($array as $key => $value){
+            $token = $token->set($key,$value);
+        }
+        $token = $token->sign($this->signer, $this->halt)->getToken();
+
         return (string)$token;  //其实现了__toString方法
     }
     public function verifyToken($tokenString){

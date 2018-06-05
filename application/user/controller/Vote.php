@@ -9,9 +9,9 @@
 namespace app\user\controller;
 
 
-class Vote extends Base
+class Vote extends Examine
 {
     public function getList(){
-        echo 'getList';
+        echo session('user_type');
     }
 }

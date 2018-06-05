@@ -29,7 +29,11 @@ class Token extends Controller
 
         $username = $this->request->param('username');
         //如果登录成功
-        $token = (new Jwt())->getToken($username,config('token_admin'));
+        $tokenArray = [
+            config('token_admin') => $username,
+        ];
+
+        $token = (new Jwt())->getToken($tokenArray);
         return jsonSuccess(['data'=>$token]);
     }
     public function loginFromOpenId(){
@@ -40,12 +44,25 @@ class Token extends Controller
         $openId = (new Wechat())->getOpenidFromCode($code);
         if (!$openId) return jsonError();
 
-        //插入新纪录
-        (new UserModel())->checkUserFromOpenid($openId);
-        session(config('token_user'),$openId);
+        //塞进token一些自定义信息
+        $tokenArray = [
+            config('token_user') => $openId,
+        ];
+        //插入新纪录或取出记录,并写入session
+        $res = (new UserModel())->checkUserFromOpenid($openId); //$res 表示是否已经审核
 
-        $token = (new Jwt())->getToken($openId,config('token_user'));
-        return jsonSuccess(['data'=>$token]);
+        if ($res){
+            $tokenArray[config('user_type')] = '1';
+        }else{
+            $tokenArray[config('user_type')] = '0';
+        }
+
+        $token = (new Jwt())->getToken($tokenArray);
+        $data = [
+            'isExamine' => $res,    //是否审核，用以跳转不同页面
+            'token' => $token,
+        ];
+        return jsonSuccess(['data'=>$data]);
     }
     public function test(){
         return json('aaa');

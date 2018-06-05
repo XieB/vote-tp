@@ -23,9 +23,16 @@ Route::put('admin/vote','admin/vote/update');
 
 //设置
 Route::put('admin/system/pass','admin/system/resetPass');
+Route::get('admin/system/noMember','admin/system/getNoExamine');
+Route::get('admin/system/member','admin/system/getExamine');
+Route::put('admin/system/member','admin/system/examineSuccess');
+Route::delete('admin/system/member','admin/system/deleteMember');
 
 //用户
-Route::get('user/vote','user/vote/getList');
+Route::get('user/vote$','user/vote/getList');
+Route::put('user/setting/user','user/setting/updateUserInfo');
+Route::get('user/setting/user','user/setting/getUserInfo');
+//Route::put('user/setting/test','user/setting/test');
 
 
 //其他测试

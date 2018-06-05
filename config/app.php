@@ -149,4 +149,5 @@ return [
     'token_admin' => 'admin',   //session及token字段名
     'token_user' => 'user',     //session及token字段名
 
+    'user_type' => 'user_type', //是否审核session字段名
 ];
