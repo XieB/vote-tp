@@ -23,12 +23,12 @@ class UserModel extends BaseModel
             ['realName','<>',''],
             ['mobile','<>','']
         ];
-        return $this->where($where)->page($page,10)->select();
+        return $this->where($where)->page($page,10)->order('id desc')->select();
     }
 
     public function getUserExamine(){
         $page = Request::param('page');
-        return $this->where(['examine'=>'1'])->page($page,10)->select();
+        return $this->where(['examine'=>'1'])->page($page,10)->order('id asc')->select();
     }
 
     public function examineSuccess(){

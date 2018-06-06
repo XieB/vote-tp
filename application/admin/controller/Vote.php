@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\OptionModel;
 use app\common\validate\VoteValidate;
 use app\admin\model\VoteModel;
 class Vote extends Base
@@ -31,15 +32,15 @@ class Vote extends Base
         return jsonError();
     }
 
-    public function delete(){
+    public function delete(){ //非事物不可靠
         (new VoteValidate())->scene('delete')->goCheck();
 
         $res = (new VoteModel())->deleteVote();
+        if (!$res) return jsonError();
+        $res = (new OptionModel())->deleteOptions();
 
-        if ($res !== false){
-            return jsonSuccess();
-        }
-        return jsonError();
+        if (!$res) return jsonError();
+        return jsonSuccess();
     }
 
     public function getOne(){
@@ -74,5 +75,20 @@ class Vote extends Base
         }
         if ($res !== false) return jsonSuccess();
         return jsonError(['info'=>'修改失败']);
+    }
+
+    public function deleteOption(){
+        (new VoteValidate())->scene('addOption')->goCheck();
+        $res = (new OptionModel())->deleteOption();
+        if ($res) return jsonSuccess();
+        return jsonError();
+    }
+
+    public function addOption(){
+        (new VoteValidate())->scene('addOption')->goCheck();
+
+        $res = (new OptionModel())->addOption();
+        if ($res) return jsonSuccess();
+        return jsonError();
     }
 }

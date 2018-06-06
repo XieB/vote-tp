@@ -20,7 +20,12 @@ class VoteModel extends BaseModel
      */
     public function addVote(){
         $data = Request::param();
-        return $this->allowField(true)->save($data);
+        $voteRes = $this->allowField(true)->save($data);
+        if (!$voteRes) return false;
+        $nameList = Request::param('nameList/a');  //强制转换为数组类型
+        $optionRes = (new OptionModel())->addOptions($nameList,$this->id);   //添加选项
+        if ($optionRes) return true;
+        return false;
     }
 
     /**
@@ -39,8 +44,18 @@ class VoteModel extends BaseModel
                 $where[] = ['endTime', '>=', $nowTime];
                 break;
         }
+        $where[] = ['b.ownerId','<>',''];
 
-        return $this->where($where)->page($page,10)->select();
+        $res = $this->alias('a')
+            ->join('option b','a.id = b.ownerId')
+            ->where($where)
+            ->group('a.id')
+            ->page($page,10)
+            ->field('a.*')
+            ->order('a.id desc')
+            ->select();
+
+        return $res;
     }
 
     /**
@@ -58,7 +73,10 @@ class VoteModel extends BaseModel
      */
     public function getOneVote(){
         $id = Request::param('id');
-        return $this->where('id',$id)->find();
+        $data = $this->where('id',$id)->find();
+        if (!$data) return fasle;
+        $data['nameList'] = (new OptionModel())->getOptionsFromVoteId($data['id']);
+        return $data;
     }
 
     public function allUpdate(){

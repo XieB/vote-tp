@@ -19,11 +19,15 @@ class VoteValidate extends BaseValidate
         'nameList' =>   'require',
         'page' =>   'require',
         'id' =>     'require|number',
+        'ownerId' => 'require|number',
+        'name' => 'require',
+
     ];
     protected $scene = [
         'add'  =>  ['title','type','startTime','endTime','nameList'],
         'get'  =>  ['type','page'],
         'delete' => ['id'],
         'partUpdate' => ['id','endTime'],
+        'addOption' => ['ownerId','name'],
     ];
 }
