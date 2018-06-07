@@ -21,6 +21,7 @@ class VoteValidate extends BaseValidate
         'id' =>     'require|number',
         'ownerId' => 'require|number',
         'name' => 'require',
+        'idList' => 'require|array',
 
     ];
     protected $scene = [
@@ -29,5 +30,7 @@ class VoteValidate extends BaseValidate
         'delete' => ['id'],
         'partUpdate' => ['id','endTime'],
         'addOption' => ['ownerId','name'],
+        'radio' => ['id','ownerId'],
+        'checkbox' => ['idList','ownerId'],
     ];
 }

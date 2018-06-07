@@ -37,7 +37,14 @@ Route::get('user/vote$','user/vote/getList');
 Route::put('user/setting/user$','user/setting/updateUserInfo');
 Route::get('user/setting/user$','user/setting/getUserInfo');
 //Route::put('user/setting/test','user/setting/test');
+Route::get('user/option$','user/option/getList');
+Route::get('user/vote/one$','user/vote/getOne');
 
+Route::post('user/vote/radio$','user/vote/doRadio');    //单选投票
+Route::post('user/vote/checkbox$','user/vote/doCheckbox');  //复选投票
+Route::get('user/vote/voted$','user/vote/hasVote'); //是否已经投票
+Route::get('user/vote/result$','user/vote/voteResult'); //获取选项记录
+Route::get('user/vote/votePersonNums','user/vote/votePersonNums');
 
 //其他测试
 Route::any('admin/token/test', 'admin/token/test');
