@@ -13,5 +13,6 @@ class WechatValidate extends BaseValidate
 {
     protected $rule = [
         'code'  =>  'require',
+        'scope' => 'require',
     ];
 }

@@ -34,6 +34,7 @@ Route::delete('admin/system/member$','admin/system/deleteMember');
 
 Route::get('admin/vote/result$','admin/vote/voteResult'); //获取选项记录
 Route::get('admin/vote/votePersonNums','admin/vote/votePersonNums');
+Route::get('admin/system/oneUserInfo$','admin/system/oneUserInfo');   //获取用户详细信息
 
 //用户
 Route::get('user/vote$','user/vote/getList');

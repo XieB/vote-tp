@@ -64,4 +64,11 @@ class System extends Base
         if ($res !== false) return jsonSuccess();
         return jsonError();
     }
+
+    public function oneUserInfo(){
+        (new SystemValidate())->scene('examineSuccess')->goCheck();
+        $res = (new UserModel())->oneUserInfo();
+        if (!$res) return jsonError();
+        return jsonSuccess(['data'=>$res]);
+    }
 }

@@ -41,4 +41,9 @@ class UserModel extends BaseModel
         $id = Request::param('id');
         return $this->where(['id'=>$id])->delete();
     }
+
+    public function oneUserInfo(){
+        $id = Request::param('id');
+        return $this->where(['id'=>$id])->find();
+    }
 }

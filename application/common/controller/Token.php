@@ -40,16 +40,24 @@ class Token extends Controller
         (new WechatValidate())->goCheck();
 
         $code = $this->request->param('code');  //获取从前端传过来的code，并得到该用户openid
-        //得到用户openid逻辑
-        $openId = (new Wechat())->getOpenidFromCode($code);
-        if (!$openId) return jsonError();
+        $scope = $this->request->param('scope');
+
+        if ($scope == 'snsapi_base'){
+            $userInfo = (new Wechat())->getOpenidFromCode($code);
+        }elseif ($scope == 'snsapi_userinfo'){
+            $userInfo = (new Wechat())->getWxUserInfoFromCode($code);
+        }
+//        if (!$openId) return jsonError();
+        if (!$userInfo) return jsonError();
+        $openId = $userInfo['openid'];
 
         //塞进token一些自定义信息
         $tokenArray = [
             config('token_user') => $openId,
         ];
         //插入新纪录或取出记录,并写入session
-        $res = (new UserModel())->checkUserFromOpenid($openId); //$res 表示是否已经审核
+//        $res = (new UserModel())->checkUserFromOpenid($openId); //$res 表示是否已经审核
+        $res = (new UserModel())->checkUser($userInfo); //$res 表示是否已经审核
 
         if ($res){
             $tokenArray[config('user_type')] = '1';

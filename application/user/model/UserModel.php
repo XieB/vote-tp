@@ -24,11 +24,32 @@ class UserModel extends BaseModel
         return true;
     }
 
-    public function addNewUser($openid){
-        $data = [
-            'openid' => $openid,
-        ];
-        $this->save($data);
+    public function checkUser($userInfo){
+        $openId = $userInfo['openid'];
+        session(config('token_user'),$openId);
+        $res = $this->where(['openid'=>$openId])->find();
+        if (!$res) {
+            $this->addNewUser($userInfo);   //添加新纪录
+        }else{
+            $this->updateWxUserInfo($userInfo); //更新信息
+        }
+        if (!$res['examine']){
+            session(config('user_type'),'0');
+            return false;
+        }
+        session(config('user_type'),'1');
+        return true;
+    }
+
+    public function addNewUser($userInfo){
+//        $data = [
+//            'openid' => $openid,
+//        ];
+        $this->allowField(true)->save($userInfo);
+    }
+
+    public function updateWxUserInfo($userInfo){    //获取的信息貌似有延迟
+        $this->allowField(true)->save($userInfo,['openid'=>$userInfo['openid']]);
     }
 
     public function updateUserInfo(){
