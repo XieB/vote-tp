@@ -8,7 +8,9 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\LogModel;
 use app\admin\model\OptionModel;
+use app\common\validate\OptionValidate;
 use app\common\validate\VoteValidate;
 use app\admin\model\VoteModel;
 class Vote extends Base
@@ -90,5 +92,25 @@ class Vote extends Base
         $res = (new OptionModel())->addOption();
         if ($res) return jsonSuccess();
         return jsonError();
+    }
+
+    public function voteResult(){
+        (new OptionValidate())->scene('get')->goCheck();
+        $res = (new OptionModel())->getResult();
+        if (!$res) return jsonError(['info'=>'没有找到该记录']);
+        $sum = 0;
+        array_map(function($v) use(&$sum){
+            $sum += $v['voteNum'];
+        },$res);
+        foreach ($res as $key => $v){
+            $res[$key]['percentage'] = intval($v['voteNum'] / $sum * 100);
+        }
+        return jsonSuccess(['data'=>$res]);
+    }
+
+    public function votePersonNums(){
+        (new OptionValidate())->scene('get')->goCheck();
+        $res = (new LogModel())->getVotePersonNums();
+        return jsonSuccess(['data'=>$res]);
     }
 }

@@ -42,4 +42,11 @@ class OptionModel extends BaseModel
         return $this->allowField(true)->save($data);
     }
 
+    public function getResult(){
+        $ownerId = Request::param('ownerId');
+        $res = $this->where(['ownerId'=>$ownerId])->order('voteNum desc')->select();
+        if (!count($res)) return false;
+        return $res->toArray();
+    }
+
 }

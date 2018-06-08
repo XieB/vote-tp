@@ -13,7 +13,7 @@ Route::allowCrossDomain(true);     //允许跨域
 //登录
 Route::post('common/token/admin$', 'common/token/loginFromUserPassword');
 Route::get('common/token/user$', 'common/token/loginFromOpenId');
-
+//管理端
 //投票
 Route::post('admin/vote$','admin/vote/add');
 Route::get('admin/vote$','admin/vote/get');
@@ -31,6 +31,9 @@ Route::get('admin/system/noMember$','admin/system/getNoExamine');
 Route::get('admin/system/member$','admin/system/getExamine');
 Route::put('admin/system/member$','admin/system/examineSuccess');
 Route::delete('admin/system/member$','admin/system/deleteMember');
+
+Route::get('admin/vote/result$','admin/vote/voteResult'); //获取选项记录
+Route::get('admin/vote/votePersonNums','admin/vote/votePersonNums');
 
 //用户
 Route::get('user/vote$','user/vote/getList');
